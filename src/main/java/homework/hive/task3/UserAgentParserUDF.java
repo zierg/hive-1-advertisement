@@ -23,7 +23,7 @@ public class UserAgentParserUDF extends GenericUDF {
     StringObjectInspector inspector;
 
     @Override
-    public Object evaluate(DeferredObject[] arguments) throws HiveException {
+    public String[] evaluate(DeferredObject[] arguments) throws HiveException {
         String userAgentString = inspector.getPrimitiveJavaObject(arguments[0]);
         if (userAgentString == null) {
             return null;
