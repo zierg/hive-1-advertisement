@@ -3,6 +3,7 @@ package homework.hive.task3;
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.apache.hadoop.hive.ql.exec.Description;
 import org.apache.hadoop.hive.ql.exec.UDFArgumentException;
 import org.apache.hadoop.hive.ql.metadata.HiveException;
 import org.apache.hadoop.hive.ql.udf.generic.GenericUDF;
@@ -17,8 +18,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
-//  add jar hive-1-advertisement-1.0-SNAPSHOT-all.jar;
+// add jar hive-1-advertisement-1.0-SNAPSHOT-all.jar;
 // create temporary function get_user_agent as 'homework.hive.task3.UserAgentParserUDF';
+@Description(
+        name = "get_user_agent",
+        value = "Parses a string containing user agent data and returns a struct with the device, browser and os",
+        extended = "Example:\n" +
+                "Source string: Mozilla/5.0 (compatible; MSIE 9.0;\\Windows NT 6.1; WOW64; Trident/5.0)\n" +
+                "Output: {device: \"Computer\", browser: \"Internet Explorer\", os: \"Windows\"}"
+)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserAgentParserUDF extends GenericUDF {
 

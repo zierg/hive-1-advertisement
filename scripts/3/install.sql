@@ -4,14 +4,14 @@ drop table if exists ads;
 CREATE TABLE ads_temp
 (
     Bid_ID string,
-    Timestamp bigint,
+    time_stamp bigint,
     Log_Type string,
     i_Pin_You_ID string,
     User_Agent string,
     IP string,
     Region_ID int,
     City_ID int,
-    Ad_Exchange 2,
+    Ad_Exchange int,
     Domain string,
     URL string,
     Anonymous_URL string,
@@ -32,7 +32,7 @@ CREATE TABLE ads_temp
 row format delimited fields terminated by "\t"
 STORED AS TEXTFILE;
 load data local inpath '/root/homework/hive/advertisement/records' OVERWRITE INTO TABLE ads_temp;
-create table ads as orc as select * from ads_temp;
+create table ads stored as orc as select * from ads_temp;
 drop table ads_temp;
 
 
@@ -47,6 +47,6 @@ CREATE TABLE cities_temp
 
 row format delimited fields terminated by "\t"
 STORED AS TEXTFILE;
-load data local inpath '/root/homework/hive/advertisement/cities.en.txt' OVERWRITE INTO TABLE cities_temp;
-create table cities as orc as select * from cities_temp;
+load data local inpath '/root/homework/hive/advertisement/city.en.txt' OVERWRITE INTO TABLE cities_temp;
+create table cities stored as orc as select * from cities_temp;
 drop table cities_temp;
