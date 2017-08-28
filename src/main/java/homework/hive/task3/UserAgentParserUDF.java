@@ -9,14 +9,16 @@ import org.apache.hadoop.hive.ql.udf.generic.GenericUDF;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspectorFactory;
 import org.apache.hadoop.hive.serde2.objectinspector.StructObjectInspector;
+import org.apache.hadoop.hive.serde2.objectinspector.primitive.JavaStringObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.PrimitiveObjectInspectorFactory;
 import org.apache.hadoop.hive.serde2.objectinspector.primitive.StringObjectInspector;
-import org.apache.hadoop.hive.serde2.objectinspector.primitive.WritableStringObjectInspector;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+//  add jar hive-1-advertisement-1.0-SNAPSHOT-all.jar;
+// create temporary function get_user_agent as 'homework.hive.task3.UserAgentParserUDF';
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserAgentParserUDF extends GenericUDF {
 
@@ -24,7 +26,7 @@ public class UserAgentParserUDF extends GenericUDF {
 
     @Override
     public String[] evaluate(DeferredObject[] arguments) throws HiveException {
-        String userAgentString = inspector.getPrimitiveJavaObject(arguments[0]);
+        String userAgentString = inspector.getPrimitiveJavaObject(arguments[0].get());
         if (userAgentString == null) {
             return null;
         }
@@ -56,7 +58,7 @@ public class UserAgentParserUDF extends GenericUDF {
 
     private StructObjectInspector createOutputObjectInspector() {
         List<String> structFields = Arrays.asList("device", "browser", "os");
-        WritableStringObjectInspector inspector = PrimitiveObjectInspectorFactory.writableStringObjectInspector;
+        JavaStringObjectInspector inspector = PrimitiveObjectInspectorFactory.javaStringObjectInspector;
         List<ObjectInspector> structInspectors = Arrays.asList(inspector, inspector, inspector, inspector);
         return ObjectInspectorFactory.getStandardStructObjectInspector(structFields, structInspectors);
     }

@@ -80,8 +80,10 @@ public class UserAgentParserUDFTest {
     @Test
     public void givenUserAgentStringWhenEvaluateThenReturnStructFields() throws HiveException {
         DeferredObject object = mock(DeferredObject.class);
+        Object text = mock(Object.class);
+        when(object.get()).thenReturn(text);
         String agent = "Mozilla/5.0 (compatible; MSIE 9.0;\\Windows NT 6.1; WOW64; Trident/5.0)";
-        when(correctStringObjectInspector.getPrimitiveJavaObject(object)).thenReturn(agent);
+        when(correctStringObjectInspector.getPrimitiveJavaObject(text)).thenReturn(agent);
         tested.initialize(new ObjectInspector[]{ correctStringObjectInspector});
         String[] result = tested.evaluate(new DeferredObject[]{object});
         assertThat(result).containsExactly("Computer", "Internet Explorer", "Windows");
@@ -90,7 +92,7 @@ public class UserAgentParserUDFTest {
     private void verifyField(StructField structField, String fieldName) {
         assertThat(structField)
                 .returns(fieldName, StructField::getFieldName)
-                .returns(PrimitiveObjectInspectorFactory.writableStringObjectInspector, StructField::getFieldObjectInspector);
+                .returns(PrimitiveObjectInspectorFactory.javaStringObjectInspector, StructField::getFieldObjectInspector);
     }
 
     @Rule
