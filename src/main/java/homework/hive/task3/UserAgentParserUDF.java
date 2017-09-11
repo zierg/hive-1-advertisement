@@ -25,7 +25,7 @@ import java.util.function.Supplier;
         value = "Parses a string containing user agent data and returns a struct with the device, browser and os",
         extended = "Example:\n" +
                 "Source string: Mozilla/5.0 (compatible; MSIE 9.0;\\Windows NT 6.1; WOW64; Trident/5.0)\n" +
-                "Output: {device: \"Computer\", browser: \"Internet Explorer\", os: \"Windows\"}"
+                "Output: {device: \"Computer\", browser: \"Internet Explorer\", os: \"Windows\", UA: \"Browser\"}"
 )
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserAgentParserUDF extends GenericUDF {
@@ -42,7 +42,8 @@ public class UserAgentParserUDF extends GenericUDF {
         String device = agent.getOperatingSystem().getDeviceType().getName();
         String browser = agent.getBrowser().getGroup().getName();
         String os = agent.getOperatingSystem().getGroup().getName();
-        return new String[] {device, browser, os};
+        String ua = agent.getBrowser().getBrowserType().getName();
+        return new String[] {device, browser, os, ua};
     }
 
     @Override
@@ -65,7 +66,7 @@ public class UserAgentParserUDF extends GenericUDF {
     }
 
     private StructObjectInspector createOutputObjectInspector() {
-        List<String> structFields = Arrays.asList("device", "browser", "os");
+        List<String> structFields = Arrays.asList("device", "browser", "os", "ua");
         JavaStringObjectInspector inspector = PrimitiveObjectInspectorFactory.javaStringObjectInspector;
         List<ObjectInspector> structInspectors = Arrays.asList(inspector, inspector, inspector, inspector);
         return ObjectInspectorFactory.getStandardStructObjectInspector(structFields, structInspectors);

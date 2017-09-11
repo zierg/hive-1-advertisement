@@ -66,6 +66,7 @@ public class UserAgentParserUDFTest {
         verifyField(structFields.get(0), "device");
         verifyField(structFields.get(1), "browser");
         verifyField(structFields.get(2), "os");
+        verifyField(structFields.get(3), "ua");
     }
 
     @Test
@@ -86,7 +87,7 @@ public class UserAgentParserUDFTest {
         when(correctStringObjectInspector.getPrimitiveJavaObject(text)).thenReturn(agent);
         tested.initialize(new ObjectInspector[]{ correctStringObjectInspector});
         String[] result = tested.evaluate(new DeferredObject[]{object});
-        assertThat(result).containsExactly("Computer", "Internet Explorer", "Windows");
+        assertThat(result).containsExactly("Computer", "Internet Explorer", "Windows", "Browser");
     }
 
     private void verifyField(StructField structField, String fieldName) {
